@@ -26,12 +26,16 @@ USER_AGENT = (
 # 现的那条；这避免 Summarizer 内部按 name 索引 client 字典时被后写覆盖。
 MODEL_PROVIDERS: list[dict] = [
     {
-        "name": "mmkg-codex-pro",
-        "api_key_env": "MMKG_CODEX_PRO_API_KEY",
-        "base_url_env": "MMKG_CODEX_PRO_BASE_URL",
-        "default_base_url": "https://code.mmkg.cloud/v1",
+        "name": "opencode-go",
+        "api_key_env": "OPENCODE_GO_API_KEY",
+        "base_url_env": "OPENCODE_GO_BASE_URL",
+        "default_base_url": "https://opencode.ai/inference/go/openai/v1",
+        "default_headers": {
+            "User-Agent": "Fudan_iCourse_Subscriber/1.0",
+            "x-opencode-session": "icourse-subscriber",
+        },
         "models": [
-            "gpt-5.6-luna",
+            "deepseek-v4.1-flash",
         ],
     },
     {
@@ -110,6 +114,7 @@ def resolve_model_providers() -> list[dict]:
             "name": p["name"],
             "api_key": api_key,
             "base_url": base_url,
+            "default_headers": dict(p.get("default_headers") or {}),
             "models": list(p["models"]),
         }
         resolved.append(entry)
